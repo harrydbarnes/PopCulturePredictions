@@ -46,7 +46,6 @@ function App() {
            <PredictionCard
              name={userData.name}
              predictions={userData.predictions}
-             theme={theme}
              onEdit={handleEdit}
            />
          </div>

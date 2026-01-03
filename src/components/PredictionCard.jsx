@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Download, Loader2 } from 'lucide-react';
 
-// eslint-disable-next-line no-unused-vars
-const PredictionCard = ({ name, predictions, theme, onEdit }) => {
+const PredictionCard = ({ name, predictions, onEdit }) => {
   const [isDownloading, setIsDownloading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleDownload = async () => {
     if (isDownloading) return;
+    setError(null);
     const element = document.getElementById('prediction-card');
     if (element) {
       setIsDownloading(true);
@@ -24,6 +25,7 @@ const PredictionCard = ({ name, predictions, theme, onEdit }) => {
         link.click();
       } catch (error) {
         console.error('Download failed:', error);
+        setError('Failed to generate image. Please try again.');
       } finally {
         setIsDownloading(false);
       }
@@ -58,6 +60,7 @@ const PredictionCard = ({ name, predictions, theme, onEdit }) => {
           )}
         </button>
       </div>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <div
         id="prediction-card"
