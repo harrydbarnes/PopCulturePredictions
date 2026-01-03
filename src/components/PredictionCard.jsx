@@ -1,11 +1,12 @@
 import React from 'react';
 import { Download } from 'lucide-react';
-import html2canvas from 'html2canvas';
 
-const PredictionCard = ({ name, predictions, theme, onEdit }) => {
+const PredictionCard = ({ name, predictions, onEdit }) => {
   const handleDownload = async () => {
     const element = document.getElementById('prediction-card');
     if (element) {
+      // ⚡ Bolt: Dynamically import html2canvas only when needed to reduce initial bundle size
+      const html2canvas = (await import('html2canvas')).default;
       const canvas = await html2canvas(element, {
         scale: 2,
         backgroundColor: null,
