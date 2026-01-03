@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Download, Loader2 } from 'lucide-react';
 
 const PredictionCard = ({ name, predictions, onEdit }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState(null);
+  const cardRef = useRef(null);
 
   const handleDownload = async () => {
     if (isDownloading) return;
     setError(null);
-    const element = document.getElementById('prediction-card');
+    const element = cardRef.current;
     if (element) {
       setIsDownloading(true);
       try {
@@ -63,7 +64,7 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <div
-        id="prediction-card"
+        ref={cardRef}
         className="w-full aspect-[4/5] bg-background text-text p-8 rounded-xl shadow-2xl border-4 border-primary flex flex-col relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-secondary opacity-20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
