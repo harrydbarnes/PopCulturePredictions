@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, Disc } from 'lucide-react';
 
 const PredictionCard = ({ name, predictions, onEdit }) => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -13,16 +13,16 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
     if (element) {
       setIsDownloading(true);
       try {
-        // ⚡ Bolt: Dynamically import html2canvas only when needed to reduce initial bundle size
         const html2canvas = (await import('html2canvas')).default;
         const canvas = await html2canvas(element, {
           scale: 2,
           backgroundColor: null,
+          useCORS: true,
         });
         const data = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = data;
-      link.download = `${name.replace(/[\\/\:"*?<>|]+/g, '_')}-2025-predictions.png`;
+        link.download = `${name.replace(/[\\/:"*?<>|]+/g, '_')}-2025-predictions.png`;
         link.click();
       } catch (error) {
         console.error('Download failed:', error);
@@ -39,14 +39,14 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
         <button
           onClick={onEdit}
           disabled={isDownloading}
-          className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-2 bg-gray-800 text-white rounded-full font-bold hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
         >
-          Edit Predictions
+          Edit
         </button>
         <button
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-full font-bold hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-none hover:translate-y-1 transform border-2 border-transparent"
         >
           {isDownloading ? (
             <>
@@ -56,37 +56,89 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
           ) : (
             <>
               <Download size={20} />
-              Download Card
+              Save Card
             </>
           )}
         </button>
       </div>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {error && <p className="text-red-500 mb-4 font-bold bg-white p-2 rounded">{error}</p>}
 
+      {/* Card Container */}
       <div
         ref={cardRef}
-        className="w-full aspect-[4/5] bg-background text-text p-8 rounded-xl shadow-2xl border-4 border-primary flex flex-col relative overflow-hidden"
+        className="w-full aspect-[4/5] bg-background text-text p-6 rounded-none shadow-2xl flex flex-col relative overflow-hidden font-sans select-none"
       >
-        <div className="absolute top-0 right-0 w-64 h-64 bg-secondary opacity-20 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent opacity-20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+        {/* Abstract Background Shapes */}
+        <div
+          className="absolute top-[-10%] left-[-10%] w-[50%] h-[40%] rounded-full blur-3xl animate-pulse"
+          style={{
+            backgroundColor: 'var(--color-blob-1)',
+            mixBlendMode: 'var(--blend-mode)',
+            opacity: 0.4
+          }}
+        ></div>
+        <div
+          className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] rounded-full blur-3xl"
+          style={{
+            backgroundColor: 'var(--color-blob-2)',
+            mixBlendMode: 'var(--blend-mode)',
+            opacity: 0.4
+          }}
+        ></div>
 
-        <header className="relative z-10 text-center mb-8">
-          <h1 className="text-3xl font-bold uppercase tracking-wider text-primary">2025 Predictions</h1>
-          <h2 className="text-xl mt-2 font-medium">Here's what <span className="text-secondary font-bold text-2xl decoration-wavy underline decoration-accent">{name}</span> predicts</h2>
-        </header>
-
-        <div className="flex-1 relative z-10 flex flex-col justify-center">
-          <ol className="list-decimal list-inside space-y-3">
-            {predictions.map((pred, index) => (
-              <li key={index} className="text-lg font-medium border-b border-gray-200/20 pb-1">
-                <span className="ml-2">{pred}</span>
-              </li>
-            ))}
-          </ol>
+        {/* Geometric Overlay */}
+         <div className="absolute inset-0 z-0 opacity-10"
+             style={{
+                 backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)',
+                 backgroundSize: '24px 24px'
+             }}>
         </div>
 
-        <footer className="relative z-10 mt-8 text-center text-sm opacity-70">
-          <p>#PopCulture2025</p>
+        {/* Content */}
+        <header className="relative z-10 mb-4 flex justify-between items-start">
+            <div className="max-w-[80%]">
+                <h2 className="text-sm font-black uppercase tracking-[0.2em] opacity-70">2025 Prediction</h2>
+                <h1 className="text-4xl font-black uppercase tracking-tighter leading-none mt-1 break-words">
+                    {name}'s<br/>
+                    <span className="bg-text text-background px-2 mt-1 inline-block transform -rotate-1">WRAP-UP</span>
+                </h1>
+            </div>
+            <Disc className="w-12 h-12 animate-[spin_10s_linear_infinite] opacity-80" />
+        </header>
+
+        <div className="flex-1 relative z-10 flex flex-col justify-center my-2">
+          <div className="flex flex-col h-full justify-between">
+            {predictions.map((pred, index) => (
+              <div key={index} className="flex items-center group">
+                <span className="w-8 text-xl font-black font-mono text-primary opacity-80 group-hover:opacity-100 transition-opacity">
+                    {index + 1}
+                </span>
+                <div className="flex-1 border-b-2 border-text/10 pb-0.5 ml-2 overflow-hidden">
+                    <span className="text-sm md:text-base font-bold truncate block text-text/90 uppercase tracking-tight">
+                        {pred}
+                    </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <footer className="relative z-10 mt-4 flex justify-between items-end border-t-4 border-current pt-2">
+          <div className="flex flex-col">
+              <span className="text-xs font-bold uppercase tracking-widest opacity-70">Total Predictions</span>
+              <span className="text-2xl font-black">{predictions.length}</span>
+          </div>
+           <div className="flex flex-col items-end">
+              <span className="text-xs font-bold uppercase tracking-widest opacity-70">Status</span>
+              <div className="bg-text text-background px-2 py-0.5 text-xs font-bold uppercase mt-1">Confirmed</div>
+          </div>
+           <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1 opacity-50">
+             <div className="flex gap-1">
+                 {[...Array(5)].map((_, i) => (
+                     <div key={i} className={`h-8 w-2 ${i % 2 === 0 ? 'bg-current' : 'bg-transparent border border-current'}`}></div>
+                 ))}
+             </div>
+           </div>
         </footer>
       </div>
     </div>
