@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { Download, Loader2, Disc } from 'lucide-react';
 
+const DECORATIVE_ELEMENTS_COUNT = 5;
+
 const PredictionCard = ({ name, predictions, onEdit }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState(null);
@@ -70,19 +72,17 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
       >
         {/* Abstract Background Shapes */}
         <div
-          className="absolute top-[-10%] left-[-10%] w-[50%] h-[40%] rounded-full blur-3xl animate-pulse"
+          className="absolute top-[-10%] left-[-10%] w-[50%] h-[40%] rounded-full blur-3xl animate-pulse opacity-40"
           style={{
             backgroundColor: 'var(--color-blob-1)',
             mixBlendMode: 'var(--blend-mode)',
-            opacity: 0.4
           }}
         ></div>
         <div
-          className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] rounded-full blur-3xl"
+          className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] rounded-full blur-3xl opacity-40"
           style={{
             backgroundColor: 'var(--color-blob-2)',
             mixBlendMode: 'var(--blend-mode)',
-            opacity: 0.4
           }}
         ></div>
 
@@ -134,7 +134,7 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
           </div>
            <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1 opacity-50">
              <div className="flex gap-1">
-                 {[...Array(5)].map((_, i) => (
+                 {Array.from({ length: DECORATIVE_ELEMENTS_COUNT }).map((_, i) => (
                      <div key={i} className={`h-8 w-2 ${i % 2 === 0 ? 'bg-current' : 'bg-transparent border border-current'}`}></div>
                  ))}
              </div>
