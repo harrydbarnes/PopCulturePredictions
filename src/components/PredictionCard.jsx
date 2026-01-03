@@ -22,7 +22,7 @@ const PredictionCard = ({ name, predictions, onEdit }) => {
         const data = canvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.href = data;
-        link.download = `${name}-2025-predictions.png`;
+      link.download = `${name.replace(/[\\/\:"*?<>|]+/g, '_')}-2025-predictions.png`;
         link.click();
       } catch (error) {
         console.error('Download failed:', error);
