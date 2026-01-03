@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PredictionForm from './components/PredictionForm';
 import PredictionCard from './components/PredictionCard';
 import ThemeSelector from './components/ThemeSelector';
-import Inspiration from './components/Inspiration';
 
 function App() {
   const [theme, setTheme] = useState('default');
@@ -36,7 +35,6 @@ function App() {
               <ThemeSelector currentTheme={theme} setTheme={setTheme} />
           </div>
           <PredictionForm onSubmit={handleFormSubmit} />
-          <Inspiration />
         </>
       )}
 
@@ -51,9 +49,6 @@ function App() {
          </div>
       )}
 
-      <footer className="mt-16 text-center opacity-50 text-sm">
-        <p>© 2025 Pop Culture Predictions Generator</p>
-      </footer>
     </div>
   );
 }
